@@ -1,16 +1,30 @@
-# Create a flux factory here
-Flux  = require('./flux_factory')
+Dispatcher   = require('./dispatcher/')
+Store        = require('./store/')
 
-window.UserStore = new Flux.Store({
-  name      : ''
-  age       : null
-  sex       : ''
-  hasOrder  : false
-  })
+Assign       = require('object-assign')
 
-window.OrderStore = new Flux.Store({
-  order     : ''
-  })
 
-UserStore.addChangeListener ->
-  Store.getState()
+_stores = {}
+
+class FluxFactory
+
+  constructor: ->
+
+  createStore: (params) ->
+    _stores[ params.name ] = Assign( {}, Store, params )
+    _stores[ params.name ].dispatcherIndex = Dispatcher.register( (payload) ->
+      action = payload.action
+
+      actionType  = action.actionType.split('.')
+      _nsp        = actionType.shift(0)
+      actionType  = actionType.join('.')
+
+      return true if _nsp isnt _stores[ params.name ].name
+      _stores[ params.name ][ actionType ]?(action.data)
+      return true
+    )
+    _stores[ params.name ]._selfInit(params.init)
+    return _stores[ params.name ]
+
+
+module.exports = new FluxFactory()

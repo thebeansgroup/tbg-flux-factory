@@ -1,8 +1,10 @@
 {
   "name": "flux_factory",
   "version": "0.0.1",
-  "main": "server.js",
-  "scripts": {},
+  "main": "src/index.coffee",
+  "scripts": {
+    "start": "node server.js"
+  },
   "author": "sam ternent",
   "dependencies": {
     "coffeeify": "^0.7.0",
@@ -26,5 +28,16 @@
     "webpack": "^1.10.5"
   },
   "description": "Factory for flux",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thebeansgroup/flux_factory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thebeansgroup/flux_factory/issues"
+  },
+  "homepage": "https://github.com/thebeansgroup/flux_factory"
 }
