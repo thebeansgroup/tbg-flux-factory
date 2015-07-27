@@ -21,11 +21,11 @@ _postLogin = (params) ->
           email: data.email
           password: data.password
 
-      success = (data) ->
-          UserStore.setState({
-            logged_in   : true
-            user_details: data
-          })
+  success = (data) ->
+      UserStore.setState({
+        logged_in   : true
+        user_details: data
+      })
   
   _postAsync 'login_url', params, success
   
