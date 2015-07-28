@@ -1,17 +1,17 @@
 {
   "name": "tbg-flux-factory",
   "version": "0.1.0",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": ""
   },
   "author": "sam ternent",
   "dependencies": {
-    "codo": "^2.0.11",
     "flux": "^2.0.3",
     "object-assign": "^3.0.0"
   },
   "devDependencies": {
+    "codo": "^2.0.11",
     "coffee-script": ">= 1.3",
     "coffeeify": "^0.7.0",
     "semver": "^5.0.1"
