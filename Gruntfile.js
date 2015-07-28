@@ -13,6 +13,7 @@ module.exports = function(grunt) {
       webpack: {
         files: [
           "src/**/*",
+          "test/**/*",
         ],
         tasks: ["webpack:build-dev"],
         options: {

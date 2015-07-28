@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    'bundle'   : './src/index.coffee',
+    'bundle'   : './test/index.coffee',
   },
   output: {
     filename: "./dist/[name].js",

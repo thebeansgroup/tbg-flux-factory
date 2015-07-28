@@ -1,15 +1,13 @@
-# this is an example test file ---- will remove
 
+Flux  = require('../src')
 
-Flux  = require('./flux_factory')
+OrderActions =
+  view  :
+    addOrder: (data) ->
+      OrderStore.setState(data)
 
-Assign =  require('object-assign')
-
-
-
-
-window.UserStore = Flux.createStore({
-  name      : 'user'
+Flux.createStore({
+  name      : 'UserStore'
   data      : {
                 id          : 1
                 first_name  : 'sam'
@@ -19,49 +17,20 @@ window.UserStore = Flux.createStore({
                 hasOrder    : false
                 orders      : []
               }
-  init       : ->
+
+  })
+
+Flux.createStore({
+    name          : 'OrderStore'
+    data          : { }
+    actions       : OrderActions
   })
 
 
 
 
-
-
-window.OrderStore = Flux.createStore({
-  name      : 'order'
-  data      : {
-                order     : {}
-              }
-  })
-
-OrderStore.registerViewAction('addOrder', (data) ->
-      orders = UserStore.getStateValue('orders').length
-      OrderStore.setState(Assign({}, id: orders, data))
-    )
-
-
-
-
-
-UserStore.registerServerAction('postLogin', (data) ->
-      params =
-        user:
-          email: data.email
-          password: data.password
-
-      success = (data) ->
-        if data.success
-          OrderStore.setState({ X_CSRF_TOKEN : data.token })
-        else
-          OrderStore.setState({ errors  : data.errors })
-
-      console.log 'post', params
-    )
-
-
-
-
-
+window.UserStore  = Flux.getStore('UserStore')
+window.OrderStore = Flux.getStore('OrderStore')
 
 OrderStore.addChangeListener ->
   orderState = OrderStore.getState()

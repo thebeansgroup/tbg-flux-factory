@@ -14,10 +14,12 @@ Store  = assign({}, EventEmitter::,
 
   _selfInit: (init) ->
     init?()
-    @registerViewAction('setState')
+    @registerViewActions    assign {}, @viewActions, { setState: null }
+    @registerServerActions  @serverActions
+    @registerActions        @actions
 
   setState: (obj) ->
-    @data = assign({}, @data, obj)
+    assign @data, obj
     @emitChange()
 
 
@@ -26,28 +28,32 @@ Store  = assign({}, EventEmitter::,
   getStateValue: (key) -> @data[ key ]
 
 
-  # Register view action
-  registerViewAction: (name, func) ->
+  registerActions: (actions) ->
+    @registerViewActions    actions.view    if actions?
+    @registerServerActions  actions.server  if actions?
+    return @
+
+
+  registerViewActions: (actions) ->
+    @_registerAction 'handleViewAction', k, v     for k, v of actions
+    return @
+
+  registerServerActions: (actions) ->
+    @_registerAction 'handleServerAction', k, v   for k, v of actions
+    return @
+
+
+
+
+  _registerAction: (handleType, name, func) ->
     action = {}
     @[ name ] = func if func?
-
     action[ name ] = (data) =>
-      Dispatcher.handleViewAction
+      Dispatcher[ handleType ]
         actionType  : "#{@name}.#{name}"
         data        : data
 
-    @Actions = assign( {}, @Actions, action )
-
-  # Register server action
-  registerServerAction: (name, func) ->
-    action = {}
-    @[ name ] = func
-    action[ name ] = (data) =>
-      Dispatcher.handleServerAction
-        actionType  : "#{@name}.#{name}"
-        data        : data
-
-    @Actions = assign( {}, @Actions, action )
+    assign @Actions, action
 
 
 

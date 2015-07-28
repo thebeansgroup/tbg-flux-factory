@@ -44,18 +44,87 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var Flux, OrderActions;
+	
+	Flux = __webpack_require__(1);
+	
+	OrderActions = {
+	  view: {
+	    addOrder: function(data) {
+	      return OrderStore.setState(data);
+	    }
+	  }
+	};
+	
+	Flux.createStore({
+	  name: 'UserStore',
+	  data: {
+	    id: 1,
+	    first_name: 'sam',
+	    surname: 'ternent',
+	    age: 29,
+	    sex: 'male',
+	    hasOrder: false,
+	    orders: []
+	  }
+	});
+	
+	Flux.createStore({
+	  name: 'OrderStore',
+	  data: {},
+	  actions: OrderActions
+	});
+	
+	window.UserStore = Flux.getStore('UserStore');
+	
+	window.OrderStore = Flux.getStore('OrderStore');
+	
+	OrderStore.addChangeListener(function() {
+	  var orderState, orders;
+	  orderState = OrderStore.getState();
+	  if (orderState.userId === UserStore.getStateValue('id')) {
+	    orders = UserStore.getStateValue('orders');
+	    orders.push(orderState);
+	    UserStore.setState({
+	      hasOrder: true,
+	      orders: orders
+	    });
+	    return console.log(UserStore.getState());
+	  }
+	});
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var FluxFactory;
+	
+	FluxFactory = __webpack_require__(2);
+	
+	module.exports = new FluxFactory();
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var Assign, Dispatcher, FluxFactory, Store, _stores;
 	
-	Dispatcher = __webpack_require__(1);
+	Dispatcher = __webpack_require__(3);
 	
-	Store = __webpack_require__(6);
+	Store = __webpack_require__(8);
 	
-	Assign = __webpack_require__(5);
+	Assign = __webpack_require__(7);
 	
 	_stores = {};
 	
 	FluxFactory = (function() {
 	  function FluxFactory() {}
+	
+	  FluxFactory.prototype.getStore = function(name) {
+	    return _stores[name];
+	  };
 	
 	  FluxFactory.prototype.createStore = function(params) {
 	    _stores[params.name] = Assign({}, Store, params);
@@ -81,18 +150,18 @@
 	
 	})();
 	
-	module.exports = new FluxFactory();
+	module.exports = FluxFactory;
 
 
 /***/ },
-/* 1 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher, Assign, Dispatcher;
 	
-	Dispatcher = __webpack_require__(2).Dispatcher;
+	Dispatcher = __webpack_require__(4).Dispatcher;
 	
-	Assign = __webpack_require__(5);
+	Assign = __webpack_require__(7);
 	
 	AppDispatcher = Assign(new Dispatcher(), {
 	  handleViewAction: function(action) {
@@ -113,7 +182,7 @@
 
 
 /***/ },
-/* 2 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -125,11 +194,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 	
-	module.exports.Dispatcher = __webpack_require__(3)
+	module.exports.Dispatcher = __webpack_require__(5)
 
 
 /***/ },
-/* 3 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -146,7 +215,7 @@
 	
 	"use strict";
 	
-	var invariant = __webpack_require__(4);
+	var invariant = __webpack_require__(6);
 	
 	var _lastID = 1;
 	var _prefix = 'ID_';
@@ -385,7 +454,7 @@
 
 
 /***/ },
-/* 4 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -444,7 +513,7 @@
 
 
 /***/ },
-/* 5 */
+/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -489,16 +558,16 @@
 
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var CHANGE_EVENT, Dispatcher, EventEmitter, Store, assign;
 	
-	Dispatcher = __webpack_require__(1);
+	Dispatcher = __webpack_require__(3);
 	
-	EventEmitter = __webpack_require__(7).EventEmitter;
+	EventEmitter = __webpack_require__(9).EventEmitter;
 	
-	assign = __webpack_require__(5);
+	assign = __webpack_require__(7);
 	
 	CHANGE_EVENT = 'change';
 	
@@ -510,10 +579,14 @@
 	    if (typeof init === "function") {
 	      init();
 	    }
-	    return this.registerViewAction('setState');
+	    this.registerViewActions(assign({}, this.viewActions, {
+	      setState: null
+	    }));
+	    this.registerServerActions(this.serverActions);
+	    return this.registerActions(this.actions);
 	  },
 	  setState: function(obj) {
-	    this.data = assign({}, this.data, obj);
+	    assign(this.data, obj);
 	    return this.emitChange();
 	  },
 	  getState: function() {
@@ -522,7 +595,32 @@
 	  getStateValue: function(key) {
 	    return this.data[key];
 	  },
-	  registerViewAction: function(name, func) {
+	  registerActions: function(actions) {
+	    if (actions != null) {
+	      this.registerViewActions(actions.view);
+	    }
+	    if (actions != null) {
+	      this.registerServerActions(actions.server);
+	    }
+	    return this;
+	  },
+	  registerViewActions: function(actions) {
+	    var k, v;
+	    for (k in actions) {
+	      v = actions[k];
+	      this._registerAction('handleViewAction', k, v);
+	    }
+	    return this;
+	  },
+	  registerServerActions: function(actions) {
+	    var k, v;
+	    for (k in actions) {
+	      v = actions[k];
+	      this._registerAction('handleServerAction', k, v);
+	    }
+	    return this;
+	  },
+	  _registerAction: function(handleType, name, func) {
 	    var action;
 	    action = {};
 	    if (func != null) {
@@ -530,27 +628,13 @@
 	    }
 	    action[name] = (function(_this) {
 	      return function(data) {
-	        return Dispatcher.handleViewAction({
+	        return Dispatcher[handleType]({
 	          actionType: _this.name + "." + name,
 	          data: data
 	        });
 	      };
 	    })(this);
-	    return this.Actions = assign({}, this.Actions, action);
-	  },
-	  registerServerAction: function(name, func) {
-	    var action;
-	    action = {};
-	    this[name] = func;
-	    action[name] = (function(_this) {
-	      return function(data) {
-	        return Dispatcher.handleServerAction({
-	          actionType: _this.name + "." + name,
-	          data: data
-	        });
-	      };
-	    })(this);
-	    return this.Actions = assign({}, this.Actions, action);
+	    return assign(this.Actions, action);
 	  },
 	  emitChange: function() {
 	    return this.emit(CHANGE_EVENT);
@@ -567,7 +651,7 @@
 
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
