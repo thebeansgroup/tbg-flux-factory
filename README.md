@@ -1,5 +1,6 @@
 # tbg-flux-factory
 Factory wrapper for [flux](https://github.com/facebook/flux)
+
 ### Install
 
 `npm install tbg-flux-factory --save`
@@ -7,6 +8,8 @@ Factory wrapper for [flux](https://github.com/facebook/flux)
 https://www.npmjs.com/package/tbg-flux-factory
 
 ### How it works
+
+Working [example gist](http://requirebin.com/?gist=ecbd038f297594dab76a) 
 
 #### Register a new store with actions
 ```
@@ -87,4 +90,15 @@ _handleShowLogin : function () {
 },
 
 ---
+```
+
+#### Listen to other stores
+```
+var Flux        = require('tbg-flux-factory');
+var LoginStore  = Flux.getStore('Login');
+var UserStore  	= Flux.getStore('User');
+
+LoginStore.addChangeListener(function () {
+	UserStore.Actions.fetchUserDetails()
+});
 ```
