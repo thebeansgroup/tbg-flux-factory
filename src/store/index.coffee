@@ -12,14 +12,14 @@ Store  = assign({}, EventEmitter::,
   # This is the public Actions collection
   Actions     : {}
 
-  _selfInit: (init) ->
-    init?()
+  _init: (init) ->
     @registerViewActions    assign {}, @viewActions, { setState: null }
     @registerServerActions  @serverActions
     @registerActions        @actions
+    init?()
 
   setState: (obj) ->
-    assign @data, obj
+    @data = assign {}, @data, obj
     @emitChange()
 
 
@@ -53,7 +53,7 @@ Store  = assign({}, EventEmitter::,
         actionType  : "#{@name}.#{name}"
         data        : data
 
-    assign @Actions, action
+    @Actions = assign {}, @Actions, action
 
 
 

@@ -25,8 +25,8 @@ class FluxFactory
       _stores[ params.name ][ actionType ]?(action.data)
       return true
     )
-    _stores[ params.name ]._selfInit(params.init)
+    _stores[ params.name ]._init(params.init)
     return _stores[ params.name ]
 
 
-module.exports = FluxFactory
+module.exports = new FluxFactory()

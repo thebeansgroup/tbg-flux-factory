@@ -1,2 +1,1 @@
-FluxFactory     = require('./factory/')
-module.exports  = new FluxFactory()
+module.exports = require('./factory/')
