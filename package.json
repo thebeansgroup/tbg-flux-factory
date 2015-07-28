@@ -1,5 +1,5 @@
 {
-  "name": "flux-factory",
+  "name": "tbg-flux-factory",
   "version": "1.0.0",
   "main": "./src/index.js",
   "scripts": {
@@ -21,10 +21,10 @@
   "directories": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/thebeansgroup/flux-factory.git"
+    "url": "https://github.com/thebeansgroup/tbg-flux-factory.git"
   },
   "bugs": {
-    "url": "https://github.com/thebeansgroup/flux-factory/issues"
+    "url": "https://github.com/thebeansgroup/tbg-flux-factory/issues"
   },
-  "homepage": "https://github.com/thebeansgroup/flux-factory"
+  "homepage": "https://github.com/thebeansgroup/tbg-flux-factory"
 }

@@ -1,0 +1,96 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/opt/boxen/nodenv/versions/v0.10/bin/npm', 'publish' ]
+2 info using npm@2.7.5
+3 info using node@v0.10.29
+4 verbose node symlink /opt/boxen/nodenv/versions/v0.10/bin/node
+5 verbose publish [ '.' ]
+6 silly cache add args [ '.', null ]
+7 verbose cache add spec .
+8 silly cache add parsed spec { raw: '.',
+8 silly cache add   scope: null,
+8 silly cache add   name: null,
+8 silly cache add   rawSpec: '.',
+8 silly cache add   spec: '/Users/st/src/fluxFactory',
+8 silly cache add   type: 'directory' }
+9 verbose addLocalDirectory /Users/st/.npm/flux-factory/1.0.0/package.tgz not in flight; packing
+10 verbose tar pack [ '/Users/st/.npm/flux-factory/1.0.0/package.tgz',
+10 verbose tar pack   '/Users/st/src/fluxFactory' ]
+11 verbose tarball /Users/st/.npm/flux-factory/1.0.0/package.tgz
+12 verbose folder /Users/st/src/fluxFactory
+13 info prepublish flux-factory@1.0.0
+14 verbose addLocalTarball adding from inside cache /Users/st/.npm/flux-factory/1.0.0/package.tgz
+15 silly cache afterAdd flux-factory@1.0.0
+16 verbose afterAdd /Users/st/.npm/flux-factory/1.0.0/package/package.json not in flight; writing
+17 verbose afterAdd /Users/st/.npm/flux-factory/1.0.0/package/package.json written
+18 silly publish { name: 'flux-factory',
+18 silly publish   version: '1.0.0',
+18 silly publish   main: './src/index.js',
+18 silly publish   scripts: { test: '' },
+18 silly publish   author: { name: 'sam ternent' },
+18 silly publish   dependencies: { codo: '^2.0.11', flux: '^2.0.3', 'object-assign': '^3.0.0' },
+18 silly publish   devDependencies:
+18 silly publish    { 'coffee-script': '>= 1.3',
+18 silly publish      coffeeify: '^0.7.0',
+18 silly publish      semver: '^5.0.1' },
+18 silly publish   description: 'Factory for flux',
+18 silly publish   license: 'MIT',
+18 silly publish   directories: {},
+18 silly publish   repository:
+18 silly publish    { type: 'git',
+18 silly publish      url: 'https://github.com/thebeansgroup/flux-factory.git' },
+18 silly publish   bugs: { url: 'https://github.com/thebeansgroup/flux-factory/issues' },
+18 silly publish   homepage: 'https://github.com/thebeansgroup/flux-factory',
+18 silly publish   readme: '# flux_factory\n\n### Register a new store\n```\nFlux      = require(\'flux_factory\')\n\nUserStore = Flux.createStore({\n  name      : \'user\'\n  data      : {\n                logged_in     : false\n                user_details  : null\n              }\n  })\n```\n\n### Register actions to a store\n```\n_postLogin = (params) ->\n  params =\n        user:\n          email: data.email\n          password: data.password\n\n  success = (data) ->\n      UserStore.setState({\n        logged_in   : true\n        user_details: data\n      })\n  \n  _postAsync \'login_url\', params, success\n  \n\nUserStore.registerServerAction(\'login\', _postLogin)\n```\n\n### Listen to changes\n```\ncomponentWillMount: ->\n  UserStore.addChangeListener ->\n    @setState UserStore.getState()\n```\n',
+18 silly publish   readmeFilename: 'README.md',
+18 silly publish   gitHead: 'b17cad2339e5052f12440416f4f44a4001184508',
+18 silly publish   _id: 'flux-factory@1.0.0',
+18 silly publish   _shasum: '712812f9aa6bf0d08c04812e071baa7e60196dea',
+18 silly publish   _from: '.' }
+19 silly mapToRegistry name flux-factory
+20 silly mapToRegistry using default registry
+21 silly mapToRegistry registry https://registry.npmjs.org/
+22 silly mapToRegistry uri https://registry.npmjs.org/flux-factory
+23 verbose publish registryBase https://registry.npmjs.org/
+24 silly publish uploading /Users/st/.npm/flux-factory/1.0.0/package.tgz
+25 verbose request uri https://registry.npmjs.org/flux-factory
+26 verbose request sending authorization for write operation
+27 info attempt registry request try #1 at 12:55:45
+28 verbose request id 27dc4d5bea2feebf
+29 http request PUT https://registry.npmjs.org/flux-factory
+30 http 403 https://registry.npmjs.org/flux-factory
+31 verbose headers { 'content-type': 'application/json',
+31 verbose headers   'cache-control': 'max-age=60',
+31 verbose headers   'content-length': '104',
+31 verbose headers   'accept-ranges': 'bytes',
+31 verbose headers   date: 'Tue, 28 Jul 2015 11:55:46 GMT',
+31 verbose headers   via: '1.1 varnish',
+31 verbose headers   connection: 'keep-alive',
+31 verbose headers   'x-served-by': 'cache-lcy1125-LCY',
+31 verbose headers   'x-cache': 'MISS',
+31 verbose headers   'x-cache-hits': '0',
+31 verbose headers   'x-timer': 'S1438084545.823739,VS0,VE1095' }
+32 verbose request invalidating /Users/st/.npm/registry.npmjs.org/flux-factory on PUT
+33 error publish Failed PUT 403
+34 verbose stack Error: You do not have permission to publish 'flux-factory'. Are you logged in as the correct user? : flux-factory
+34 verbose stack     at CachingRegistryClient.<anonymous> (/opt/boxen/nodenv/versions/v0.10.29/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:247:14)
+34 verbose stack     at Request._callback (/opt/boxen/nodenv/versions/v0.10.29/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:170:14)
+34 verbose stack     at Request.self.callback (/opt/boxen/nodenv/versions/v0.10.29/lib/node_modules/npm/node_modules/request/request.js:360:22)
+34 verbose stack     at Request.emit (events.js:98:17)
+34 verbose stack     at Request.<anonymous> (/opt/boxen/nodenv/versions/v0.10.29/lib/node_modules/npm/node_modules/request/request.js:1202:14)
+34 verbose stack     at Request.emit (events.js:117:20)
+34 verbose stack     at IncomingMessage.<anonymous> (/opt/boxen/nodenv/versions/v0.10.29/lib/node_modules/npm/node_modules/request/request.js:1150:12)
+34 verbose stack     at IncomingMessage.emit (events.js:117:20)
+34 verbose stack     at _stream_readable.js:929:16
+34 verbose stack     at process._tickCallback (node.js:419:13)
+35 verbose statusCode 403
+36 verbose pkgid flux-factory
+37 verbose cwd /Users/st/src/fluxFactory
+38 error Darwin 14.1.0
+39 error argv "node" "/opt/boxen/nodenv/versions/v0.10/bin/npm" "publish"
+40 error node v0.10.29
+41 error npm  v2.7.5
+42 error code E403
+43 error You do not have permission to publish 'flux-factory'. Are you logged in as the correct user? : flux-factory
+44 error If you need help, you may report this error at:
+44 error     <https://github.com/npm/npm/issues>
+45 verbose exit [ 1, true ]
