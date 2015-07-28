@@ -1,6 +1,6 @@
 {
   "name": "flux-factory",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "./src/index.js",
   "scripts": {
     "test": ""
@@ -13,17 +13,18 @@
   },
   "devDependencies": {
     "coffee-script": ">= 1.3",
-    "coffeeify": "^0.7.0"
+    "coffeeify": "^0.7.0",
+    "semver": "^5.0.1"
   },
   "description": "Factory for flux",
   "license": "MIT",
-  "directories": { },
+  "directories": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/thebeansgroup/flux_factory.git"
+    "url": "https://github.com/thebeansgroup/flux-factory.git"
   },
   "bugs": {
-    "url": "https://github.com/thebeansgroup/flux_factory/issues"
+    "url": "https://github.com/thebeansgroup/flux-factory/issues"
   },
-  "homepage": "https://github.com/thebeansgroup/flux_factory"
+  "homepage": "https://github.com/thebeansgroup/flux-factory"
 }
