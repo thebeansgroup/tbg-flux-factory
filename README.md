@@ -1,41 +1,90 @@
-# flux_factory
+# tbg-flux-factory
+Factory wrapper for [flux](https://github.com/facebook/flux)
+### Install
 
-### Register a new store
+`npm install tbg-flux-factory --save`
+
+https://www.npmjs.com/package/tbg-flux-factory
+
+### How it works
+
+#### Register a new store with actions
 ```
-Flux      = require('flux_factory')
+var FluxFactory = require('tbg-flux-factory');
 
-UserStore = Flux.createStore({
-  name      : 'user'
-  data      : {
-                logged_in     : false
-                user_details  : null
-              }
-  })
+var LoginStore = FluxFactory.createStore({
+  name		: 'Login',
+  data		: {
+    logged_in			: false,
+    login_open    : false
+  },
+	actions : {
+	  view    : {
+	    toggle_showLogin: function () {
+	      LoginStore.setState({
+	        login_open  : !LoginStore.getStateValue('login_open')
+	      });
+	    }
+	  },
+	  server	: {
+    	login: function (params) {
+        xhr('to_login_', params);
+    	}
+    }
+	}
+});
 ```
 
-### Register actions to a store
-```
-_postLogin = (params) ->
-  params =
-        user:
-          email: data.email
-          password: data.password
+#### Register actions to a store
 
-  success = (data) ->
-      UserStore.setState({
-        logged_in   : true
-        user_details: data
-      })
-  
-  _postAsync 'login_url', params, success
-  
+```
+var Flux        = require('tbg-flux-factory');
+var LoginStore  = Flux.getStore('Login');
 
-UserStore.registerServerAction('login', _postLogin)
+LoginStore.registerActions({
+  view    : {
+    toggle_showLogin: function () {
+      LoginStore.setState({
+        login_open  : !LoginStore.getStateValue('login_open')
+      });
+    }
+  },
+  server	: {
+  	login: function (params) {
+      xhr('to_login_', params);
+  	}
+  }
+});
+
 ```
 
-### Listen to changes
+#### Use with a synced state to components
+
 ```
-componentWillMount: ->
-  UserStore.addChangeListener ->
-    @setState UserStore.getState()
+var Flux        = require('tbg-flux-factory');
+var LoginStore  = Flux.getStore('Login');
+
+---
+
+getInitialState : function () {
+	return LoginStore.getState();
+},
+
+componentWillMount : function () {
+  var that = this;
+  LoginStore.addChangeListener(function () {
+  	that.setState(LoginStore.getState());
+  });
+},
+
+_handleLoginClick : function (e) {
+  e.preventDefault();
+  var params = __getParamsHere()
+  LoginStore.Actions.login(params);
+},
+_handleShowLogin : function () {
+  LoginStore.Actions.toggle_showLogin();
+},
+
+---
 ```
