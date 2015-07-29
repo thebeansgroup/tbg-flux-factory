@@ -68,7 +68,6 @@ var Flux        = require('tbg-flux-factory');
 var LoginStore  = Flux.getStore('Login');
 
 ---
-
 getInitialState : function () {
 	return LoginStore.getState();
 },
@@ -78,15 +77,6 @@ componentWillMount : function () {
   LoginStore.addChangeListener(function () {
   	that.setState(LoginStore.getState());
   });
-},
-
-_handleLoginClick : function (e) {
-  e.preventDefault();
-  var params = __getParamsHere()
-  LoginStore.Actions.login(params);
-},
-_handleShowLogin : function () {
-  LoginStore.Actions.toggle_showLogin();
 },
 
 ---
