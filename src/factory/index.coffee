@@ -12,6 +12,9 @@ class FluxFactory
   getStore    : (name) ->
     return _stores[ name ]
 
+  getAllStores : ->
+    return _stores
+
   createStore : (params) ->
     _stores[ params.name ] = Assign( {}, Store, params )
     _stores[ params.name ].dispatcherIndex = Dispatcher.register( (payload) ->
